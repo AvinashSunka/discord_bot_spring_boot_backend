@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class LeetCodeWrapperService {
 
-    private static final String WRAPPER_API_URL = "http://localhost:3000/api/problems";
+    private static final String WRAPPER_API_URL = "https://leetcode-wrapper.onrender.com/api/problems";
 
     public String fetchData(String patternName) {
         RestTemplate restTemplate = new RestTemplate();
