@@ -1,8 +1,8 @@
 package com.sensei.bot.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,24 +14,27 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class LeetCodeWrapperService {
 
-    private static final String WRAPPER_API_URL = "https://leetcode-wrapper.onrender.com/api/problems";
+    private final RestTemplate restTemplate;
+    private final String wrapperApiUrl;
+
+    public LeetCodeWrapperService(RestTemplate restTemplate,
+                                 @Value("${leetcode.wrapper.url:https://leetcode-wrapper.onrender.com/api/problems}") String wrapperApiUrl) {
+        this.restTemplate = restTemplate;
+        this.wrapperApiUrl = wrapperApiUrl;
+    }
 
     public String fetchData(String patternName) {
-        RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("pattern", patternName);
-
+        Map<String, String> requestBody = Map.of("pattern", patternName);
         HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(
-                    WRAPPER_API_URL,
-                    request,
-                    String.class
+                wrapperApiUrl,
+                request,
+                String.class
             );
 
             return response.getBody();

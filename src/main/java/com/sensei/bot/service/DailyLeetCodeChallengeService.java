@@ -19,7 +19,11 @@ public class DailyLeetCodeChallengeService {
 
     private static final Logger logger = LoggerFactory.getLogger(DailyLeetCodeChallengeService.class);
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public DailyLeetCodeChallengeService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Value("${daily.challenge.wrapper-url:https://leetcode-wrapper.onrender.com/api/daily}")
     private String leetcodeWrapperUrl;
